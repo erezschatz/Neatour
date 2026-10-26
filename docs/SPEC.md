@@ -96,8 +96,11 @@ Three rules hold the shape:
 `127.0.0.1:<port>`. `handler.ts` checks the `X-Neatour-Token` header, serves
 `GET /status`, returns 404 for anything else. `reader.ts` stats and parses the
 status file and decides staleness against `stale_threshold_seconds`.
-`rollup.ts` computes the worst status. `contract.ts` holds the types. Config is
-`agent.config.json` beside `main.ts`; the secret comes from the `NEATOUR_SECRET`
+`rollup.ts` computes the worst status. `contract.ts` holds the types.
+`config.ts` loads and checks `agent.config.json` (`server`, `port`,
+`status_file`, `stale_threshold_seconds`), beside `main.ts` unless a path is
+given as `main.ts`'s first argument; a relative `status_file` is resolved
+against the config file's folder. A bad config stops the agent at start; the secret comes from the `NEATOUR_SECRET`
 environment variable set in the systemd unit, never from a file in the repo.
 The web server in front of the agent rejects requests without the correct
 token before they reach Deno; the agent checks again. Both must pass.

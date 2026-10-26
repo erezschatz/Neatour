@@ -1,0 +1,9 @@
+{
+  "server": "laptop",
+  "generated_at": "2026-10-26T12:00:00+02:00",
+  "checks": {
+    "disk_root": { "status": "ok", "value": 42, "unit": "percent_used", "message": "/ is 42% full", "checked_at": "2026-10-26T12:00:00+02:00", "detail": [] },
+    "memory": { "status": "warn", "value": 84, "unit": "percent_used", "message": "Memory at 84%", "checked_at": "2026-10-26T12:00:00+02:00", "detail": [] },
+    "mysql": { "status": "ok", "value": true, "unit": "running", "message": "mysql is running", "checked_at": "2026-10-26T12:00:00+02:00", "detail": [] }
+  }
+}

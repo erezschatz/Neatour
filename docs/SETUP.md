@@ -33,6 +33,17 @@ deno task hooks     # git config core.hooksPath .githooks — installs the commi
 deno task test      # must pass before touching anything
 ```
 
+## Agent on the laptop
+
+```sh
+cd agent
+NEATOUR_SECRET=dev deno task start      # serves fixtures/status.fresh.json on 127.0.0.1:9100
+curl -H 'X-Neatour-Token: dev' http://127.0.0.1:9100/status
+```
+
+`start` touches the fixture first, so it reads as fresh for ten minutes from
+each start. `deno task test` in `agent/` runs the agent's tests alone.
+
 ## Agent deployment (manual; step 08 scripts this)
 
 On the server, as root:
@@ -43,7 +54,9 @@ On the server, as root:
 4. `mkdir -p /var/lib/neatour && chown root:neatour /var/lib/neatour && chmod 750 /var/lib/neatour`
 5. `cp agent.config.example.json agent.config.json`, edit `server`, `port`,
    paths; `chown neatour:neatour`, `chmod 640`.
-6. `cp neatour-agent.service /etc/systemd/system/`, set `NEATOUR_SECRET` in
+6. `cp neatour-agent.service /etc/systemd/system/` (it expects Deno at
+   `/usr/local/bin/deno`; change `ExecStart` if step 2 put it elsewhere, and
+   record it here), set `NEATOUR_SECRET` in
    it, `systemctl daemon-reload && systemctl enable --now neatour-agent`.
 7. In the host's web server, proxy `/neatour/` to `http://127.0.0.1:9100/` and
    reject requests whose `X-Neatour-Token` is not the secret (D3). nginx:

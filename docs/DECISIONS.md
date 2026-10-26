@@ -201,3 +201,34 @@ child, so the hook only works with `--allow-run=/bin/sh … --allow-env` — whi
 is `-A` with extra words, and the runbook's own rule is that a hook with `-A`
 is a hook nobody reads. The scripts are written against `node:` built-ins; Node
 runs them as written and the twelve Appendix J tests pass.
+
+## D16 · 2026-10-26 · A status file with a check the agent cannot roll up is rejected whole
+
+**Decision.** The agent's reader accepts a status file only if it is a JSON
+object with a `server` string and a `checks` object whose every value is an
+object with a §1 `status`. Anything else is treated like invalid JSON: HTTP 200,
+`status: "unknown"`, `checks: {}`, and a `message` naming the first problem.
+Other check fields are not checked; they pass through verbatim (CONTRACT §4).
+
+**Rejected.** Passing the checks through unchecked (the rollup would be
+computed over a status it does not know, and the hub would carry it on);
+dropping only the bad check (a check would vanish from the page without a
+trace, which is worse than the whole server showing `unknown` with a reason).
+
+**Why.** The file is written by bash; a typo in one check script should be
+loud. `unknown` with the reason in `message` is what the contract already uses
+for every other file the agent cannot trust.
+
+## D17 · 2026-10-26 · The agent's version is a constant in `handler.ts`
+
+**Decision.** `AGENT_VERSION` in `agent/handler.ts`, kept equal to `version`
+in the root `deno.json` by a test in `agent/handler.test.ts`.
+
+**Rejected.** A `version` in `agent/deno.json`, imported as JSON (that file
+carries a comment beside every permission flag, as the code rules ask, and
+Deno's JSON import refuses comments; tried 2026-10-26 with Deno 2.9.7);
+importing the root `deno.json` from the agent (the agent is installed as a
+standalone folder and must not import outside itself).
+
+**Why.** One more line to bump, guarded by a test, is cheaper than giving up
+the flag comments or the standalone folder.

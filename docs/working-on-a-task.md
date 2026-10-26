@@ -87,4 +87,5 @@ checkable against the repository.
 - [ ] `## What was done` appended, with how and by whom it was verified
 - [ ] A cold reader checked the record against the diff
 - [ ] Any rejected alternative has a `D<n>` entry
-- [ ] `version` in `deno.json` bumped if this is meant to be installed
+- [ ] `version` in `deno.json` bumped if this is meant to be installed, and
+      `AGENT_VERSION` in `agent/handler.ts` with it (a test checks they match)

@@ -26,7 +26,7 @@ Deno.test("an agent response with no file carries unknown, no checks and a messa
     agent_version: "0.1.0",
     polled_at: "2026-05-19T14:32:15+03:00",
     status_file_age_seconds: -1,
-    status_file_stale: true,
+    status_file_stale: false, // -1 does not exceed the threshold
     status: "unknown",
     checks: {},
     message: "no status file at /var/lib/neatour/status.json",

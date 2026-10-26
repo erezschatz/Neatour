@@ -1,0 +1,6 @@
+{
+  "server": "podcasts",
+  "port": 9100,
+  "status_file": "/var/lib/neatour/status.json",
+  "stale_threshold_seconds": 600
+}

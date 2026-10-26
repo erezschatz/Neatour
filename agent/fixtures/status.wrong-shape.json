@@ -1,0 +1,7 @@
+{
+  "server": "laptop",
+  "generated_at": "2026-10-26T12:00:00+02:00",
+  "checks": {
+    "disk_root": { "status": "fine", "value": 42, "message": "/ is 42% full", "checked_at": "2026-10-26T12:00:00+02:00" }
+  }
+}

@@ -105,16 +105,22 @@ transform or interpret the checks.
 | `agent`                   | The server name from the status file; the correlation key |
 | `agent_version`           | The agent's own version |
 | `polled_at`               | Set by the agent at response time |
-| `status_file_age_seconds` | Now minus the file's mtime; `-1` when there is no file |
+| `status_file_age_seconds` | Now minus the file's mtime, in whole seconds; `-1` when there is no file or it cannot be stat'ed |
 | `status_file_stale`       | `true` when age exceeds `stale_threshold_seconds` (default 600) |
 | `status`                  | Worst status across checks; `unknown` whenever `status_file_stale` is true, regardless of the checks |
 | `checks`                  | Verbatim from the status file; `{}` when there is no readable file |
 | `message`                 | Present only on failure: why there are no checks |
 
-**The agent never fails hard.** Missing file, unreadable file, invalid JSON —
-all return HTTP 200 with `status: "unknown"`, `checks: {}` and a `message`.
-The only non-200 responses are `401` (bad or missing token) and `404` (any
-other route). The hub treats any non-200, timeout or unparseable body as
+**The agent never fails hard.** Missing file, unreadable file, invalid JSON,
+or JSON that is not a status file — no `server` string, no `checks` object, or
+any check whose `status` is not a §1 value (D16) — all return HTTP 200 with
+`status: "unknown"`, `checks: {}` and a `message`. In that body `agent` is the
+`server` from the agent's own config, since there is no file to take it from.
+When the file exists but cannot be used, `status_file_age_seconds` and
+`status_file_stale` still describe it from its mtime; when there is no file,
+they are `-1` and `false` (`-1` does not exceed the threshold). The only non-200 responses are `401` (bad or missing token,
+checked before the route) and `404` (any other route or method), each with a
+body of `{ "message": "…" }`. The hub treats any non-200, timeout or unparseable body as
 *unreachable*, not as a status.
 
 Auth: `X-Neatour-Token: <shared secret>` on every request, checked by the web

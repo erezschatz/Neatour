@@ -1,0 +1,6 @@
+{
+  "server": "laptop",
+  "port": 9100,
+  "status_file": "status.fresh.json",
+  "stale_threshold_seconds": 600
+}

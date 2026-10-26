@@ -1,0 +1,1 @@
+{ "server": "laptop", "checks": { "disk_root": { "status": "ok"

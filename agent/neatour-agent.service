@@ -1,0 +1,29 @@
+# /etc/systemd/system/neatour-agent.service — see docs/SETUP.md, agent deployment.
+[Unit]
+Description=Neatour agent: serves the status file on 127.0.0.1
+After=network.target
+
+[Service]
+# Unprivileged: the agent reads, root's cron writes (D1).
+User=neatour
+Group=neatour
+# The shared token (D3). Replace on the server; this file in the repo holds a placeholder only.
+Environment=NEATOUR_SECRET=change-me
+# Deno keeps its module cache here; the user has no home directory.
+Environment=DENO_DIR=/var/cache/neatour-agent
+Environment=DENO_NO_UPDATE_CHECK=1
+CacheDirectory=neatour-agent
+# --allow-net=127.0.0.1  listen on loopback; the agent makes no outbound calls
+# --allow-read=/opt/neatour/agent,/var/lib/neatour  its own code and config, and the status file
+# --allow-env=NEATOUR_SECRET  the token, and nothing else from the environment
+ExecStart=/usr/local/bin/deno run --allow-net=127.0.0.1 --allow-read=/opt/neatour/agent,/var/lib/neatour --allow-env=NEATOUR_SECRET /opt/neatour/agent/main.ts
+Restart=on-failure
+RestartSec=5
+# Read-only view of the system; the agent writes nothing but Deno's cache.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

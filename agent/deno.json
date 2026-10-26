@@ -1,0 +1,18 @@
+{
+  // The agent is installed on a server as this folder alone, so it carries
+  // its own tasks. Version: AGENT_VERSION in handler.ts.
+  // No lockfile: there are no dependencies to lock, and under the systemd
+  // unit /opt/neatour/agent is read-only, so Deno must not try to write one.
+  "lock": false,
+  "tasks": {
+    // Laptop run against the fresh fixture: NEATOUR_SECRET=dev deno task start
+    // touch first: the fixture's mtime is its checkout time, and after ten
+    // minutes it would read as stale.
+    // --allow-net=127.0.0.1  listen on loopback; the agent makes no outbound calls
+    // --allow-read=.         the config and the status file, both under agent/ here
+    // --allow-env=NEATOUR_SECRET  the shared token, and nothing else from the environment
+    "start": "touch fixtures/status.fresh.json && deno run --allow-net=127.0.0.1 --allow-read=. --allow-env=NEATOUR_SECRET main.ts fixtures/agent.config.dev.json",
+    // --allow-read  the fixtures; the tests write nothing
+    "test": "deno test --allow-read"
+  }
+}
