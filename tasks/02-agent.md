@@ -15,7 +15,7 @@ wrong token gets 401. Nothing else exists.
 - [x] Tests beside each unit: rollup priority (incl. empty → `unknown`);
       reader against fixtures for missing / unreadable / invalid / stale /
       fresh; handler for 401, 404, and the two 200 shapes
-- [ ] `deno task start` in `agent/` serves `http://127.0.0.1:9100/status`
+- [x] `deno task start` in `agent/` serves `http://127.0.0.1:9100/status`
       against `agent/fixtures/status.fresh.json`, verified by Erez with `curl`
 - [x] `docs/CONTRACT.md` §4 matches the body exactly; any discrepancy fixed in
       one of the two in this scene
@@ -105,3 +105,21 @@ Not verified:
 
 This section makes step 02 read as done while the third box is open; Erez's
 `curl` closes it in a second section.
+
+## What was done
+
+The laptop run verified by Erez on his Mac, 2026-10-26, which closes the
+third box.
+
+`NEATOUR_SECRET=dev deno task start` in `agent/` touched the fixture, logged
+the config and the status file it reads ("stale after 600s"), and listened on
+`http://127.0.0.1:9100/`. `curl -H 'X-Neatour-Token: dev'
+http://127.0.0.1:9100/status` got the CONTRACT §4 body: `agent: "laptop"`,
+`agent_version: "0.1.0"`, `status_file_age_seconds: 9`,
+`status_file_stale: false`, `status: "warn"`, and the three checks of
+`fixtures/status.fresh.json` verbatim. The agent logged `GET /status 200`.
+
+Recorded by Claude from the terminal output Erez pasted into the session.
+The 401 path was not part of his run; it was checked by Claude's `curl` in the
+first record and by `handler.test.ts`. No doc changed: nothing in what ran
+disagreed with `docs/`.
