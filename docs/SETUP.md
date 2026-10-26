@@ -17,7 +17,7 @@ problems, not for what Neatour is.
 
 | Tool | Version | Where | Why |
 |------|---------|-------|-----|
-| Deno | 2.9.7 on the Mac (step 01; read by Claude with `deno --version` on 2026-10-26, to be confirmed by Erez); 2.9.6 in the Linux workspace at step 00. Servers record theirs at 03/06. | Mac, workspace, every server | agent, hub, `deno test`, `deno check` |
+| Deno | 2.9.7 on the Mac (aarch64-apple-darwin, TypeScript 6.0.3; confirmed by Erez at step 01, 2026-10-26); 2.9.6 in the Linux workspace at step 00. Servers record theirs at 03/06. | Mac, workspace, every server | agent, hub, `deno test`, `deno check` |
 | jq   | any 1.6+ | every server | `assemble.sh` |
 | bash | 4+ | every server | checks |
 | cron, systemd | the server's own | every server | scheduling the checks; running the agent |
