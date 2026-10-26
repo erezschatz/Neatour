@@ -10,7 +10,9 @@ change: the acknowledgment fields and routes (old §5 fields, old §7) are
 out of phase 1 and listed at the end as reserved.
 
 The types are held twice, `agent/contract.ts` and `hub/contract.ts`; a test
-asserts the two files are byte-identical. Edit both in the same scene.
+asserts the two files are byte-identical (`hub/contract.test.ts`). Edit both in the same scene. Besides
+the types, the file holds one value: `STATUSES`, the §1 enum as a list, so
+that a status read off disk or the wire can be checked against it.
 
 ---
 
