@@ -1,0 +1,8 @@
+# Secrets and per-machine config never enter the repo (SPEC: Configuration)
+agent/agent.config.json
+hub/hub.config.json
+*.local.json
+.env
+# Deno
+.deno/
+node_modules/

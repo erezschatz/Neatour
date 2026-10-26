@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "compilerOptions": {
+    "strict": true
+  },
+  "test": {
+    "exclude": [
+      ".claude/",
+      "scripts/"
+    ]
+  },
+  "tasks": {
+    "test": "deno test --allow-read && deno task test:hooks",
+    "test:hooks": "node --test .claude/hooks/check-unit.test.mjs",
+    "check": "deno check .",
+    "hooks": "git config core.hooksPath .githooks",
+    "changelog": "node scripts/compile-changelog.mjs"
+  }
+}
