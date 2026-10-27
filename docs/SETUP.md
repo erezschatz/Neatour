@@ -54,15 +54,18 @@ On the server, as root:
 4. `mkdir -p /var/lib/neatour && chown root:neatour /var/lib/neatour && chmod 750 /var/lib/neatour`
 5. `cp agent.config.example.json agent.config.json`, edit `server`, `port`,
    paths; `chown neatour:neatour`, `chmod 640`.
-6. `cp neatour-agent.service /etc/systemd/system/` (it expects Deno at
+6. The secret, in a file only root can read (D18; systemd reads it before
+   dropping to the `neatour` user):
+   `install -d -m 700 /etc/neatour && (umask 077 && echo "NEATOUR_SECRET=$(openssl rand -hex 32)" > /etc/neatour/agent.env)`.
+   Then `cp neatour-agent.service /etc/systemd/system/` (it expects Deno at
    `/usr/local/bin/deno`; change `ExecStart` if step 2 put it elsewhere, and
-   record it here), set `NEATOUR_SECRET` in
-   it, `systemctl daemon-reload && systemctl enable --now neatour-agent`.
+   record it here) and `systemctl daemon-reload && systemctl enable --now neatour-agent`.
 7. In the host's web server, proxy `/neatour/` to `http://127.0.0.1:9100/` and
    reject requests whose `X-Neatour-Token` is not the secret (D3). nginx:
 
    ```nginx
    location /neatour/ {
+       # <secret> is the value in /etc/neatour/agent.env
        if ($http_x_neatour_token != "<secret>") { return 401; }
        proxy_pass http://127.0.0.1:9100/;
    }

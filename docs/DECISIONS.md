@@ -232,3 +232,19 @@ standalone folder and must not import outside itself).
 
 **Why.** One more line to bump, guarded by a test, is cheaper than giving up
 the flag comments or the standalone folder.
+
+## D18 · 2026-10-27 · The agent's secret is in a root-only EnvironmentFile
+
+**Decision.** The systemd unit reads `NEATOUR_SECRET` from
+`/etc/neatour/agent.env` (directory 700, file 600, both root) with
+`EnvironmentFile=`. This refines D3, which still holds: the secret reaches
+the agent as an environment variable set by the systemd unit.
+
+**Rejected.** `Environment=NEATOUR_SECRET=…` in the unit file, as first
+written in `docs/SETUP.md` and step 02's unit.
+
+**Why.** Unit files under `/etc/systemd/system` are world-readable, and
+`systemctl show` prints `Environment=` to any local user. An `EnvironmentFile`
+is read by systemd as root before it drops to the `neatour` user, so the file
+can be root-only. Decided by Erez on 2026-10-27, before the first deployment
+to `podcasts`.

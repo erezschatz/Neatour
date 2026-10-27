@@ -7,8 +7,10 @@ After=network.target
 # Unprivileged: the agent reads, root's cron writes (D1).
 User=neatour
 Group=neatour
-# The shared token (D3). Replace on the server; this file in the repo holds a placeholder only.
-Environment=NEATOUR_SECRET=change-me
+# The shared token (D3), as NEATOUR_SECRET=<secret> in a root-only file (D18):
+# an Environment= line here would be readable by any local user, in the file
+# and through `systemctl show`.
+EnvironmentFile=/etc/neatour/agent.env
 # Deno keeps its module cache here; the user has no home directory.
 Environment=DENO_DIR=/var/cache/neatour-agent
 Environment=DENO_NO_UPDATE_CHECK=1

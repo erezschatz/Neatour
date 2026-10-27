@@ -144,7 +144,7 @@ folder and must not import across the repo.
 | What                         | Where                               | Note                                   |
 |------------------------------|-------------------------------------|----------------------------------------|
 | Agent port, status file path, stale threshold | `agent/agent.config.json` on the server | example checked in as `agent.config.example.json` |
-| Shared secret                | `NEATOUR_SECRET` env, systemd unit  | never in a file in the repo            |
+| Shared secret                | `NEATOUR_SECRET` env, from `/etc/neatour/agent.env` via the systemd unit (D18) | never in a file in the repo; root-only on the server |
 | Per-server check list        | `agent/servers/<name>.sh`           | in the repo                            |
 | Hub: agents to poll, interval, data dir | `hub/hub.config.json` on Atrium   | example checked in                     |
 | Page: public sites to check  | `frontend/sites.json`               | in the repo; it is public anyway       |
