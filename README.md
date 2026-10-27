@@ -13,3 +13,7 @@ Setup is in [`docs/SETUP.md`](docs/SETUP.md) — after cloning, run
 The repo is worked under the Unities (`docs/UNITIES.md`): every commit carries
 its test, its doc line and its task record, and `CHANGELOG.md` is compiled from
 `tasks/`, never edited. The developer's guide is `docs/working-on-a-task.md`.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
